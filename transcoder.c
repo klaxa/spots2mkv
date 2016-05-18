@@ -36,6 +36,15 @@ void dump_images(struct SpotsFrame *head)
 
 }
 
+void clear_list(struct SpotsFrame *head)
+{
+    struct SpotsFrame* cur = head;
+    struct SpotsFrame* to_delete = cur;
+    while ((cur = cur->next)) {
+        free(to_delete);
+        to_delete = cur;
+    }
+}
 
 int main(int argc, char *argv[])
 {
@@ -134,6 +143,8 @@ int main(int argc, char *argv[])
         if (i > n)
             cur = cur->next;
     }
+    clear_list(head);
+    free(spots_data);
 
     pclose(ffmpeg);
 
