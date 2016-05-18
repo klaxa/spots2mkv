@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
         }
     }
 
+    fclose(file);
+
     printf("Stream size: %li\n", stream_size);
 
     spots_dump_header(spots_data);
