@@ -98,12 +98,11 @@ int main(int argc, char *argv[])
     spots_dump_header(spots_data);
     seek = SPOTS_HEADER_SIZE;
     cur = head;
-    // if everything is right this should exactly match up with the number of images present
     sprintf(md_filename, "%s.ffmetadata", input);
     metadata = fopen(md_filename, "w");
     fprintf(metadata, ";FFMETADATA1\n");
     i = 1;
-
+    // if everything is right this should exactly match up with the number of images present
     while((cur = cur->next)) {
         cur->image = spots_get_image(spots_data, &seek, &cur->size, stream_size);
         if (!(cur == head->next)) {
