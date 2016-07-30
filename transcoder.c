@@ -122,10 +122,17 @@ int main(int argc, char *argv[])
             fprintf(metadata, "[CHAPTER]\nTIMEBASE=1/1000\nSTART=%li\n", cur->timestamp);
     }
 
-
-
     fclose(metadata);
-    sprintf(cmd, "ffmpeg -i %s -f image2pipe -r %li -i - -i %s -map_metadata 2 -map 0:a -map 1 -c:v libx264 -crf 25 %s.mkv", input, fps, md_filename, input);
+
+    sprintf(cmd,
+        "ffmpeg -i \"%s\" -f image2pipe -framerate %li -i - -i \"%s\" " // input
+            "-map_metadata 2 -map 0:a -map 1 " // map stuff
+            "-c:a libopus -b:a 16k -vbr on -ac 1 -af acompressor " // use opus with 16kbit, mix to mono, compress audio
+            "-c:v libx264 -tune stillimage -crf 25 " // x264 codec optimized for still images
+            "\"%s.mkv\"",
+        input, fps, md_filename, input);
+
+    printf("ffmpeg cmd: %s", cmd);
 
     ffmpeg = popen(cmd, "w");
 
